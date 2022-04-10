@@ -2,7 +2,7 @@ This is a simple REST API which you can register user, login and acess user info
 
 # How to run
 
-## 1. Set environment varibles
+### 1. Set environment varibles
 run following command.
 ```
 export MONGODB_URI=mongodb://ROOT_USER_NAME:ROOT_USER_PASSWORD@localhost:27017/DB_NAME?authSource=admin
@@ -10,7 +10,7 @@ export PORT=3001
 export SECRET="SECRET_KEY
 ```
 
-## 2. Run Mongo container
+### 2. Run Mongo container
 run following command
 ```
 docker run -d -e MONGO_INITDB_ROOT_USERNAME='ROOT_USER_NAME' -e MONGO_INITDB_ROOT_PASSWORD='ROOT_USER_PASSWORD' -e MONGO_INITDB_DATABASE='DB_NAME' -p 27017:27017 mongo
