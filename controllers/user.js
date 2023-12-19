@@ -1,17 +1,22 @@
 const router = require('express').Router()
 const User = require('../models/user')
-const middleware = require('../utils/middleware')
+//const middleware = require('../utils/middleware')
+const passport = require('passport')
+require('../passport-config')(passport)
 
 
-router.use(middleware.verifyToken)
+//router.use(middleware.verifyToken)
+router.use(passport.initialize())
 
-router.get('/', async (request, response) => {
-    const users = await User.find()
-    const result = users.map((user) => {
-        return {"id":user._id, 'name':user.name}
-    } )
+router.get('/', 
+    passport.authenticate('jwt', { session: false }), 
+    async (request, response) => {
+        const users = await User.find()
+        const result = users.map((user) => {
+            return {"id":user._id, 'name':user.name}
+        } )
 
-    response.status(200).send(result)
+        response.status(200).send(result)
 })
 
 
