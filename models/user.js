@@ -1,20 +1,42 @@
-const mongoose = require('mongoose')
+const { sequelize, Sequelize } = require("../config/database");
 
-const userSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    password: String,
-    street: String,
-    city: String,
-    state: String,
-    creation_date: Date,
-})
-
-userSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-      delete returnedObject.password
-      delete returnedObject.__v
+const User = sequelize.define(
+  "User",
+  {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    name: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: Sequelize.STRING,
+      validate: {
+        isEmail: true
+      },
+      allowNull: false,
+      unique: true
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    street: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    city: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    state: {
+      type: Sequelize.STRING,
+      allowNull: false,
     }
-  })
+  }
+)
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = {User}
