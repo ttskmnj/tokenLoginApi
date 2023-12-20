@@ -2,30 +2,33 @@ This is a simple REST API which you can register user, login and acess user info
 
 # How to run
 
-### 1. Set environment varibles
-run following command.
+### 1. Create `.env` file
+create `.env` file and set following variables
 ```
-export MONGODB_URI=mongodb://ROOT_USER_NAME:ROOT_USER_PASSWORD@localhost:27017/DB_NAME?authSource=admin
-export PORT=3001
-export SECRET="SECRET_KEY
+POSTGRES_USER=<POSTGRES_USERNAME>
+POSTGRES_PASSWORD=<POSTGRES_PASSWORD>
+POSTGRES_DB=<POSTGRES_DATABASE>
+POSTGRES_URI=postgres://<POSTGRES_USERNAME>:<POSTGRES_PASSWORD>@localhost:5432/<POSTGRES_DATABASE>
+PORT=3001
+JWT_SECRET=<JWT_SECRET>
 ```
 
 ### 2. Run Mongo container
 run following command
 ```
-docker run -d -e MONGO_INITDB_ROOT_USERNAME='ROOT_USER_NAME' -e MONGO_INITDB_ROOT_PASSWORD='ROOT_USER_PASSWORD' -e MONGO_INITDB_DATABASE='DB_NAME' -p 27017:27017 mongo
+$ docker run-d --env-file .env -p 5432:5432 postgres
 ```
 
 ### 3. install node libraries
 run following command at root directory of this repository.
 ```
-npm install
+$ npm install
 ```
 
 ### 4. start API
 run following command at root directory of this repository.
 ```
-npm start
+$ npm start
 ```
 
 
