@@ -28,9 +28,13 @@ router.get('/:uid', async (request, response) => {
 })
 
 
-router.put('/', async(request, response) => {
+router.put('/:uid', async(request, response) => {
+    const target_uid = request.params.uid
     const uid = request.decoded.id
     const userdata = request.body
+
+    if(target_uid != uid)
+        return response.status(401).json({ error: 'you are not allowed to update other user detail' })
 
     try{
         const user = await User.findOneAndUpdate({"_id":uid}, userdata, {new: true})
@@ -42,9 +46,12 @@ router.put('/', async(request, response) => {
 })
 
 
-router.delete('/', async (request, response) => {
-    const target_uid = request.body.target_uid
+router.delete('/:uid', async (request, response) => {
+    const target_uid = request.params.uid
     const uid = request.decoded.id
+
+    if(target_uid != uid)
+        return response.status(401).json({ error: 'you are not allowed to delete other user' })
 
     try{
         await User.deleteOne({user_id: uid})
