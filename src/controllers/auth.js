@@ -6,9 +6,15 @@ const jwt = require('jsonwebtoken')
 
 router.post('/register',  async (request, response) => {
     const userdata = request.body
+
+    // validation check
+    if(!userdata.email || !userdata.password)
+        return response.status(400).json({error: `email or password is missing `})
+
+    // generate hashed password
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(userdata.password, saltRounds)
-    
+
     const user = new User({
         name: userdata.name,
         email: userdata.email,
@@ -18,9 +24,15 @@ router.post('/register',  async (request, response) => {
         state: userdata.state,
         creation_date: new Date().toISOString()
     })
-    const savedUser = await user.save()
-    
-    response.json(savedUser)
+
+    try{
+        const savedUser = await user.save()
+        response.json(savedUser)
+    }catch (error){
+        error.code === 11000
+            ? response.status(400).json({error: `${userdata.email} is already registered`})
+            : response.status(400).json({error: `failed to register user`})
+    }
 })
 
 
@@ -33,7 +45,7 @@ router.post('/login', async (request, response) => {
         : await bcrypt.compare(password, user.password)
 
     if (!(user && passwordCorrect)) {
-        return response.status(401).json({
+        return response.status(400).json({
         error: 'invalid username or password'
         })
     }
@@ -43,7 +55,7 @@ router.post('/login', async (request, response) => {
         id: user._id,
     }
 
-  const token = jwt.sign(userForToken, process.env.SECRET)
+  const token = jwt.sign(userForToken, process.env.JWT_SECRET)
 
   response
     .status(200)
