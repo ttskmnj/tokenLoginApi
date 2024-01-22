@@ -1,35 +1,50 @@
-This is a simple REST API which you can register user, login and acess user informations.
+This is a simple REST API which you can register user, login and acess user informations using JWT Token.
+
+# Prerequisites
+- docker-compose
 
 # How to run
 
-### 1. Set environment varibles
-run following command.
+### 1. create `.env` file
+Create `.env` file in root of this repository and fill following variables
 ```
-export MONGODB_URI=mongodb://ROOT_USER_NAME:ROOT_USER_PASSWORD@localhost:27017/DB_NAME?authSource=admin
-export PORT=3001
-export SECRET="SECRET_KEY
+MONGO_INITDB_ROOT_USERNAME=<MONGODB USER>
+MONGO_INITDB_ROOT_PASSWORD=<MONGODB PASSWORD>
+MONGO_INITDB_DATABASE=<MONGODB DATABASE>
+MONGODB_URI=mongodb://<MONGODB USER>:<MONGODB PASSWORD>@mongo:27017/<MONGODB DATABASE>?authSource=admin
+PORT=3000
+JWT_SECRET=<JWJWT_SECRETT>
 ```
-
-### 2. Run Mongo container
-run following command
+*\*if you already have used port `27017` or `3000` for other use, please change them in `.env` and also make sure it match in `docker-compose.yml` too*
+### 2. Start containers
+run following command from root of this repository
 ```
-docker run -d -e MONGO_INITDB_ROOT_USERNAME='ROOT_USER_NAME' -e MONGO_INITDB_ROOT_PASSWORD='ROOT_USER_PASSWORD' -e MONGO_INITDB_DATABASE='DB_NAME' -p 27017:27017 mongo
-```
-
-### 3. install node libraries
-run following command at root directory of this repository.
-```
-npm install
-```
-
-### 4. start API
-run following command at root directory of this repository.
-```
-npm start
+$ docker-compose up -d
+[+] Building 0.0s (0/0)                                         docker:desktop-linux
+[+] Running 3/3
+ ✔ Network tokenloginapi_default  Created                                      0.0s 
+ ✔ Container mongo                Started                                      0.0s 
+ ✔ Container app                  Started                                      0.0s
 ```
 
+check if all containers are up
+```
+$ docker ps
+CONTAINER ID   IMAGE               COMMAND                  CREATED         STATUS         PORTS                      NAMES
+c0aa6dca13a8   mongo:latest        "docker-entrypoint.s…"   4 minutes ago   Up 4 minutes   0.0.0.0:27017->27017/tcp   mongo
+790618be3e00   tokenloginapi-app   "docker-entrypoint.s…"   4 minutes ago   Up 4 minutes   0.0.0.0:3000->3000/tcp     app
+```
 
-# How to test
+if you want to stop containers run following command
+```
+$ docker-compose down         
+[+] Running 3/2
+ ✔ Container mongo                Removed                                             0.1s 
+ ✔ Container app                  Removed                                             10.2s 
+ ✔ Network tokenloginapi_default  Removed                                             0.1s                                                                       
+```
+
+# How to try API
 
 ## Register user
 ### request
