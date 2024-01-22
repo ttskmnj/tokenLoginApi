@@ -32,9 +32,13 @@ router.put('/', async(request, response) => {
     const uid = request.decoded.id
     const userdata = request.body
 
-    const user = await User.findOneAndUpdate({"_id":uid}, userdata, {new: true})
+    try{
+        const user = await User.findOneAndUpdate({"_id":uid}, userdata, {new: true})
+        response.status(200).send(user)
+    }catch (error){
+        response.status(500).json({ error })
+    }
 
-    response.status(200).send(user)
 })
 
 
@@ -42,8 +46,12 @@ router.delete('/', async (request, response) => {
     const target_uid = request.body.target_uid
     const uid = request.decoded.id
 
-    await User.deleteOne({user_id: uid})
-    response.status(200).json({ msg: 'successfully removed user' })
+    try{
+        await User.deleteOne({user_id: uid})
+        response.status(200).json({ msg: 'successfully removed user' })
+    }catch (error){
+        response.status(500).json({ error })
+    }
 })
 
 
