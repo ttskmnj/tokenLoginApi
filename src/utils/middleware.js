@@ -10,7 +10,7 @@ const getTokenFrom = request => {
 
 const verifyToken = (request, response, next) => {
     const token = getTokenFrom(request);
-    jwt.verify(token, process.env.SECRET, (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err){
             return response.status(401).json({ error: 'token missing or invalid' })
         }
