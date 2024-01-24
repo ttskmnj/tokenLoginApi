@@ -9,7 +9,7 @@ router.post('/register',  async (request, response) => {
 
     // validation check
     if(!userdata.email || !userdata.password)
-        return response.status(400).json({error: `email or password is missing `})
+        return response.status(400).json({error: `Email or password is missing.`})
 
     // generate hashed password
     const saltRounds = 10
@@ -31,7 +31,7 @@ router.post('/register',  async (request, response) => {
     }catch (error){
         error.code === 11000
             ? response.status(400).json({error: `${userdata.email} is already registered`})
-            : response.status(400).json({error: `failed to register user`})
+            : response.status(400).json({error: `Failed to register user`})
     }
 })
 
